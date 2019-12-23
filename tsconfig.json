@@ -15,9 +15,9 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "experimentalDecorators": true,
-    "outDir": "./dist",
+    "noEmit": true,
     "declaration": true
   },
   "exclude": ["node_modules", "dist", "src/**/*.test.ts"],
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "huz.test.ts", "tag.test.ts", "huz.ts", "tag.ts"]
 }

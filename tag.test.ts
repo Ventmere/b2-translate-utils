@@ -5,11 +5,11 @@ import * as huz from "./huz";
 import * as tag from "./tag";
 
 const HTML_SAMPLE = fs.readFileSync(
-  path.join(__dirname, "../samples/sample2.html"),
+  path.join(__dirname, "./samples/sample2.html"),
   "utf-8"
 );
 const HTML_SAMPLE_TAGGED = fs.readFileSync(
-  path.join(__dirname, "../samples/sample2-tagged.html"),
+  path.join(__dirname, "./samples/sample2-tagged.html"),
   "utf-8"
 );
 
