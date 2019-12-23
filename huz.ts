@@ -1,8 +1,8 @@
 import * as parse5 from "parse5";
 const huz = require("huz");
 
-export type TextNode = parse5.AST.Default.TextNode;
-export type Element = parse5.AST.Default.Element;
+export type TextNode = parse5.DefaultTreeTextNode;
+export type Element = parse5.DefaultTreeElement;
 export type Node = Element | TextNode;
 export type Root = {
   childNodes: Node[];
@@ -34,7 +34,7 @@ export function parse(content: string): IParseResult {
     patched = patched.slice(0, offset) + "!" + patched.slice(offset + 1);
   }
   const htmlRoot = parse5.parseFragment(patched, {
-    locationInfo: true
+    sourceCodeLocationInfo: true
   }) as Root;
   unpatch(htmlRoot, placeholders);
   return {
@@ -44,7 +44,7 @@ export function parse(content: string): IParseResult {
   };
 }
 
-export function serialize(node: parse5.AST.Default.Node): string {
+export function serialize(node: parse5.Node): string {
   return parse5.serialize(node);
 }
 
@@ -63,15 +63,15 @@ function unpatch(htmlRoot: Root, placeholders: IPlaceholder[]) {
   for (let p of placeholders) {
     const node = textNodes.find(
       n =>
-        n.__location!.startOffset <= p.offset &&
-        n.__location!.endOffset >= p.offset
+        n.sourceCodeLocation!.startOffset <= p.offset &&
+        n.sourceCodeLocation!.endOffset >= p.offset
     );
     if (!node) {
       throw new Error(
         `pleace holder not found in html text node: char = '${p.char}', offset = '${p.offset}'`
       );
     }
-    const nodeOffset = p.offset - node.__location!.startOffset;
+    const nodeOffset = p.offset - node.sourceCodeLocation!.startOffset;
     node.value =
       node.value.slice(0, nodeOffset) + p.char + node.value.slice(nodeOffset);
   }

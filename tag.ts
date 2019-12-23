@@ -1,6 +1,7 @@
 import * as huz from "./huz";
 import uuid from "uuid/v4";
 import * as parse5 from "parse5";
+const treeAdapters: parse5.TreeAdapter = require("parse5/lib/tree-adapters/default");
 
 const PARENT_NODES: string[] = ["h1", "h2", "h3", "h4", "h5", "p", "span"];
 const CONTENT_NODES: string[] = ["#text", "img"];
@@ -29,8 +30,11 @@ export function parseTags(parseResult: huz.IParseResult): IParseTagsResult {
       } as any);
       if (!checkContentElements(node as huz.Element)) {
         warnings.push({
-          line: node.__location!.line,
-          range: [node.__location!.startOffset, node.__location!.endOffset],
+          line: node.sourceCodeLocation!.startLine,
+          range: [
+            node.sourceCodeLocation!.startOffset,
+            node.sourceCodeLocation!.endOffset
+          ],
           message: "Content should only contain `#text` or `img` nodes."
         });
       }
@@ -63,23 +67,26 @@ export function applyTags(result: IParseTagsResult): string {
     .slice(0)
     .sort(
       (a, b) =>
-        -(a.element.__location!.startOffset - b.element.__location!.startOffset)
+        -(
+          a.element.sourceCodeLocation!.startOffset -
+          b.element.sourceCodeLocation!.startOffset
+        )
     );
   let content = result.content;
   for (let tag of tags) {
     if (tag.isNew) {
-      parse5.treeAdapters.default.adoptAttributes(tag.element, [
+      treeAdapters.adoptAttributes(tag.element, [
         {
           name: "t",
           value: tag.id
         }
       ]);
-      const node = parse5.treeAdapters.default.createDocumentFragment();
-      parse5.treeAdapters.default.appendChild(node, tag.element);
+      const node = treeAdapters.createDocumentFragment();
+      treeAdapters.appendChild(node, tag.element);
       content =
-        content.slice(0, tag.element.__location!.startOffset) +
+        content.slice(0, tag.element.sourceCodeLocation!.startOffset) +
         parse5.serialize(node) +
-        content.slice(tag.element.__location!.endOffset);
+        content.slice(tag.element.sourceCodeLocation!.endOffset);
     }
   }
   return content;
