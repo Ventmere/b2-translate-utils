@@ -4,6 +4,7 @@
   "repository": "https://github.com/Ventmere/b2-translate-utils.git",
   "author": "Flux Xu <fluxxu@gmail.com>",
   "license": "MIT",
+  "main": "./dist/index.js",
   "scripts": {
     "dev": "tsc -w",
     "build": "tsc --project tsconfig.json",
