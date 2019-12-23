@@ -1,3 +1,8 @@
-export * from "./huz";
-export * from "./tag";
+"use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(require("./huz"));
+__export(require("./tag"));
 //# sourceMappingURL=index.js.map

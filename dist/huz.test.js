@@ -1,6 +1,15 @@
-import * as fs from "fs";
-import * as path from "path";
-import * as huz from "./huz";
+"use strict";
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const fs = __importStar(require("fs"));
+const path = __importStar(require("path"));
+const huz = __importStar(require("./huz"));
 const HTML_SAMPLE1 = fs.readFileSync(path.join(__dirname, "./samples/sample1.html"), "utf-8");
 test("parse huz deps", () => {
     const r = huz.parse(HTML_SAMPLE1);

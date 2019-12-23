@@ -3,7 +3,7 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "lib": ["dom", "es2017"],
-    "module": "esnext",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "preserveConstEnums": true,
     "removeComments": false,

@@ -1,6 +1,15 @@
-import * as parse5 from "parse5";
+"use strict";
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const parse5 = __importStar(require("parse5"));
 const huz = require("huz");
-export function parse(content) {
+function parse(content) {
     const r = /(?<={{\s*)([<>])/g;
     const placeholders = [];
     searchAll(content, r, (i, _, c) => {
@@ -24,9 +33,11 @@ export function parse(content) {
         handles: deps.map(d => d.name)
     };
 }
-export function serialize(node) {
+exports.parse = parse;
+function serialize(node) {
     return parse5.serialize(node);
 }
+exports.serialize = serialize;
 function unpatch(htmlRoot, placeholders) {
     const textNodes = [];
     const getTextNodes = (node) => {
@@ -88,7 +99,7 @@ function parseHuzDeps(content) {
     parseAstRefs(root);
     return refs;
 }
-export function searchAll(str, re, extract) {
+function searchAll(str, re, extract) {
     re.lastIndex = 0;
     const result = [];
     let match;
@@ -98,4 +109,5 @@ export function searchAll(str, re, extract) {
     re.lastIndex = 0;
     return result;
 }
+exports.searchAll = searchAll;
 //# sourceMappingURL=huz.js.map

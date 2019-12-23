@@ -1,9 +1,21 @@
-import uuid from "uuid/v4";
-import * as parse5 from "parse5";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const v4_1 = __importDefault(require("uuid/v4"));
+const parse5 = __importStar(require("parse5"));
 const treeAdapters = require("parse5/lib/tree-adapters/default");
 const PARENT_NODES = ["h1", "h2", "h3", "h4", "h5", "p", "span"];
 const CONTENT_NODES = ["#text", "img"];
-export function parseTags(parseResult) {
+function parseTags(parseResult) {
     const tags = [];
     const warnings = [];
     const findElements = (node, d = 0) => {
@@ -13,7 +25,7 @@ export function parseTags(parseResult) {
             const attr = element.attrs.find(a => a.name === "t");
             const id = attr ? attr.value : null;
             tags.push({
-                id: id || uuid(),
+                id: id || v4_1.default(),
                 isNew: !id,
                 element,
                 n: element.childNodes.map(node => node.value).join(","),
@@ -51,7 +63,8 @@ export function parseTags(parseResult) {
         warnings
     };
 }
-export function applyTags(result) {
+exports.parseTags = parseTags;
+function applyTags(result) {
     if (result.warnings.length) {
         throw new Error("Fix all warnings first.");
     }
@@ -78,6 +91,7 @@ export function applyTags(result) {
     }
     return content;
 }
+exports.applyTags = applyTags;
 function checkContentElements(parent) {
     const check = (elem) => {
         if (!elem.childNodes) {
