@@ -24,12 +24,16 @@ function parseTags(parseResult) {
             const element = node;
             const attr = element.attrs.find(a => a.name === "t");
             const id = attr ? attr.value : null;
+            const serNode = treeAdapters.createDocumentFragment();
+            for (let c of node.childNodes) {
+                treeAdapters.appendChild(serNode, c);
+            }
             tags.push({
                 id: id || v4_1.default(),
                 isNew: !id,
                 element,
                 n: element.childNodes.map(node => node.value).join(","),
-                content: element.childNodes.map(node => parse5.serialize(node)).join("")
+                content: parse5.serialize(serNode)
             });
             if (!checkContentElements(node)) {
                 warnings.push({

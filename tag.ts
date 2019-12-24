@@ -21,12 +21,16 @@ export function parseTags(parseResult: huz.IParseResult): IParseTagsResult {
       const element = node as huz.Element;
       const attr = element.attrs.find(a => a.name === "t");
       const id = attr ? attr.value : null;
+      const serNode = treeAdapters.createDocumentFragment();
+      for (let c of (node as parse5.DefaultTreeParentNode).childNodes) {
+        treeAdapters.appendChild(serNode, c);
+      }
       tags.push({
         id: id || uuid(),
         isNew: !id,
         element,
         n: element.childNodes.map(node => (node as any).value).join(","),
-        content: element.childNodes.map(node => parse5.serialize(node)).join("")
+        content: parse5.serialize(serNode)
       } as any);
       if (!checkContentElements(node as huz.Element)) {
         warnings.push({

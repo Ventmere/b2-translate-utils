@@ -16,6 +16,7 @@ const HTML_SAMPLE_TAGGED = fs.readFileSync(
 test("tags", () => {
   const r = huz.parse(HTML_SAMPLE);
   const tagr = tag.parseTags(r);
+  console.log(tagr.tags.map(t => t.content));
   expect(tagr.warnings).toEqual([]);
 
   tagr.tags.forEach((t, i) => {
